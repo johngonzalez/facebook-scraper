@@ -1,3 +1,7 @@
-from .facebook_scraper import get_posts, write_posts_to_csv
+from .facebook_scraper import FacebookScraper
 
-__all__ = ['get_posts', 'write_posts_to_csv']
+_default_scraper = FacebookScraper()
+
+
+def get_posts(account):
+    return _default_scraper.get_posts(account)
