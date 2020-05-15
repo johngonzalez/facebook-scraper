@@ -1,7 +1,6 @@
 import codecs
 import re
-from urllib.parse import (parse_qsl, unquote, urlencode, urljoin, urlparse,
-                          urlunparse)
+from urllib.parse import parse_qsl, unquote, urlencode, urljoin, urlparse, urlunparse
 
 
 def find_and_search(node, selector, pattern, cast=str):
