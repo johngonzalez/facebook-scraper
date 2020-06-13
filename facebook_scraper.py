@@ -151,12 +151,13 @@ def _get_group_posts(path, pages=10, timeout=5, sleep=0, credentials=None, extra
 
 
 def _extract_post(article):
-    text, post_text, shared_text = _extract_text(article)
+    text, post_text, shared_text = _extract_text(article) or (None,None,None)
     return {
         'post_id': _extract_post_id(article),
         'text': text,
         'post_text': post_text,
         'shared_text': shared_text,
+        'author': _extract_author(article), #new
         'time': _extract_time(article),
         'image': _extract_image(article),
         'likes': _find_and_search(article, 'footer', _likes_regex, _parse_int) or 0,
@@ -187,6 +188,7 @@ def _extract_text(article):
             article = response.html.find('.story_body_container', first=True)
 
     nodes = article.find('p, header')
+
     if nodes:
         post_text = []
         shared_text = []
@@ -214,13 +216,21 @@ def _extract_text(article):
 
     return None
 
+#new
+def _extract_author(article):
+    try:
+        author = article.find('header h3 a', first=True).text
+        return author
+    except (KeyError, ValueError, AttributeError):
+        return None
+  
 
 def _extract_time(article):
    ## Handle post time on group post
     try:
         time = article.find('abbr', first=True).text
         return time
-    except (KeyError, ValueError):
+    except (KeyError, ValueError, AttributeError):
         pass
 
     try:
@@ -414,6 +424,7 @@ def write_posts_to_csv(account=None, group=None, filename=None, **kwargs):
     :param credentials: Credentials for login - username and password, tuple
     :return:            CSV written in the same location with <<account_name>>_posts.csv
     """
+
     list_of_posts = list(get_posts(account=account, group=group, **kwargs))
 
     if not list_of_posts:
