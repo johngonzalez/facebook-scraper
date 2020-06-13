@@ -6,7 +6,7 @@ Scrape Facebook public pages without an API key. Inspired by [twitter-scraper](h
 ## Install
 
 ```sh
-pip install facebook-scraper
+git clone https://github.com/johngonzalez/facebook-scraper.git
 ```
 
 
@@ -14,9 +14,10 @@ pip install facebook-scraper
 
 Send the unique **page name** as the first parameter and you're good to go:
 
+1. Method 1: Inline
+
 ```python
 >>> from facebook_scraper import get_posts
-
 >>> for post in get_posts('nintendo', pages=1):
 ...     print(post['text'][:50])
 ...
@@ -24,6 +25,12 @@ The final step on the road to the Super Smash Bros
 We’re headed to PAX East 3/28-3/31 with new games
 ```
 
+2. Method 2: To csv file
+
+```python
+>>> from facebook_scraper import write_post_to_csv
+>>> write_post_to_csv(group = 'thenintendoswitch', pages = 1)
+```
 
 ### Optional parameters
 
@@ -42,6 +49,7 @@ We’re headed to PAX East 3/28-3/31 with new games
  'text': 'Don’t let this diminutive version of the Hero of Time fool you, '
          'Young Link is just as heroic as his fully grown version! Young Link '
          'joins the Super Smash Bros. series of amiibo figures!',
+ 'author': 'johngonzalez',
  'time': datetime.datetime(2019, 4, 29, 12, 0, 1),
  'image': 'https://scontent.flim16-1.fna.fbcdn.net'
           '/v/t1.0-0/cp0/e15/q65/p320x320'
